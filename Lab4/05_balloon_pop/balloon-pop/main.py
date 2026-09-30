@@ -1,41 +1,35 @@
-"""
-Balloon Pop (Lab Starter)
-
-Run with:  python3 main.py
-
-Click balloons to pop them before they reach the bottom.
-"""
-
 import pygame
 
 from game.game_engine import GameEngine
 from game.renderer import WINDOW_SIZE
 
+pygame.init()
 
-def main():
-    pygame.init()
-    screen = pygame.display.set_mode(WINDOW_SIZE)
-    pygame.display.set_caption("Balloon Pop")
-    clock = pygame.time.Clock()
-    font = pygame.font.SysFont("consolas", 22)
+screen = pygame.display.set_mode(WINDOW_SIZE)
+pygame.display.set_caption("Balloon Pop")
 
-    engine = GameEngine()
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                engine.handle_click(event.pos)
+font = pygame.font.Font(None, 32)
+clock = pygame.time.Clock()
 
-        engine.update()
-        engine.draw(screen, font)
+engine = GameEngine()
+running = True
 
-        pygame.display.flip()
-        clock.tick(60)
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-    pygame.quit()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            engine.handle_click(event.pos)
 
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_r and engine.game_over:
+                engine.reset_game()
 
-if __name__ == "__main__":
-    main()
+    engine.update()
+    engine.draw(screen, font)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
