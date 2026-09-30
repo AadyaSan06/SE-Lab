@@ -1,19 +1,36 @@
+
 """
-Balloon: falls from the top of the screen. The player must pop it
-before it reaches the bottom. Balloons vary in size - this matters for
-how click detection should work.
+Balloon: falls from the top of the screen.
+Each balloon has a type, colour, and scoring value.
 """
 
 import pygame
 
 
 class Balloon:
-    def __init__(self, x, y, radius, speed, color=(220, 90, 120)):
+    def __init__(
+        self,
+        x,
+        y,
+        radius,
+        speed,
+        balloon_type="normal",
+        color=None,
+    ):
         self.x = x
         self.y = y
         self.radius = radius
         self.speed = speed
-        self.color = color
+        self.balloon_type = balloon_type
+
+        # Each balloon type has a distinct colour.
+        colors = {
+            "normal": (220, 90, 120),    # Pink
+            "bonus": (255, 200, 40),     # Yellow
+            "penalty": (100, 100, 240),  # Blue
+        }
+
+        self.color = color if color is not None else colors[balloon_type]
 
     def update(self):
         self.y += self.speed
@@ -23,6 +40,8 @@ class Balloon:
 
     def get_rect(self):
         return pygame.Rect(
-            int(self.x - self.radius), int(self.y - self.radius),
-            self.radius * 2, self.radius * 2,
+            int(self.x - self.radius),
+            int(self.y - self.radius),
+            self.radius * 2,
+            self.radius * 2,
         )
